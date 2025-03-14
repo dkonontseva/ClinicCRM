@@ -1,8 +1,7 @@
 import json
 import os
 from typing import Optional
-
-import redis
+import aioredis
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from sqlalchemy import func, or_, and_, alias
 from sqlalchemy.future import select
@@ -14,7 +13,7 @@ from clinicApp.app.api.talons.schema import AppointmentCreate, AppointmentRespon
 from clinicApp.app.core.database import async_session_maker
 from clinicApp.app.models.models import Talons, Schedules, Patients, Doctors, Departments, Users
 
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
+redis_client = aioredis.from_url("redis://redis:6379", db=0)
 REQUEST_TOPIC = os.getenv("REQUEST_TOPIC")
 RESPONSE_TOPIC = os.getenv("RESPONSE_TOPIC")
 CONFIRMATION_TOPIC = os.getenv("CONFIRMATION_TOPIC")
