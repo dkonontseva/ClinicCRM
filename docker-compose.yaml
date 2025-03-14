@@ -5,7 +5,7 @@ services:
   clinic_service_app:
     build:
       context: ./clinicApp
-    image: clinic_service_app:latest
+    image: cliniccrm-assistant_service_app:latest
     command: [ "uvicorn", "clinicApp.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
     ports:
       - "8001:8000"
@@ -29,7 +29,7 @@ services:
   assistant_service_app:
     build:
       context: ./aiAssistant
-    image: assistant_service_app:latest
+    image: cliniccrm-assistant_service_app:latest
     command: [ "uvicorn", "aiAssistant.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
     ports:
       - "8002:8000"
