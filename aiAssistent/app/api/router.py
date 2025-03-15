@@ -9,11 +9,11 @@ from aiAssistent.app.api import schemas, models
 from aiAssistent.app.core.database import async_session_maker
 from aiAssistent.ml.training.predict import vectorizer, model, predict_specialist_and_recommendation
 from sqlalchemy import select
-import redis
-
+import aioredis
 router = APIRouter(prefix="/assistant", tags=["AI assistant"])
 
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
+
+redis_client = aioredis.from_url("redis://redis:6379", db=0)
 KAFKA_BOOTSTRAP_SERVERS= "localhost:9092"
 REQUEST_TOPIC = "appointment_requests"
 RESPONSE_TOPIC = "appointment_responses"
@@ -149,7 +149,7 @@ async def consume_appointment_response():
 @router.post("/confirm-appointment/")
 async def confirm_appointment(complaint_id: int, confirmed: bool, patient_id: int):
     if confirmed:
-        slot_data = redis_client.get(f"slot:{complaint_id}")
+        slot_data = await redis_client.get(f"slot:{complaint_id}")
         if not slot_data:
             return {"message": "Предложенное время больше недоступно."}
 

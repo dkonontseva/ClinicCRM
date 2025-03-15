@@ -4,10 +4,9 @@ services:
   # Сервис для приложения клиники
   clinic_service_app:
     build:
-      context: ./clinicApp/
+      context: ./clinicApp
       dockerfile: Dockerfile
-    container_name: clinic_service_app
-    command: [ "uvicorn", "clinicApp.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
+    command: [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
     ports:
       - "8001:8000"
     environment:
@@ -23,16 +22,15 @@ services:
       - clinic_service_db
       - kafka
       - redis
-    volumes:
-      - ./clinicApp:/app/clinicApp
+#    volumes:
+#      - ./clinicApp:/app/clinicApp
 
   # Сервис для ии ассистента
   assistant_service_app:
     build:
-      context: ./aiAssistent/
+      context: ./aiAssistent
       dockerfile: Dockerfile
-    container_name: assistant_service_app
-    command: [ "uvicorn", "aiAssistent.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
+    command: [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
     ports:
       - "8002:8000"
     environment:
@@ -48,8 +46,8 @@ services:
       - assistant_service_db
       - kafka
       - redis
-    volumes:
-      - ./aiAssistent:/app/aiAssistent
+#    volumes:
+#      - ./aiAssistent:/app/aiAssistent
 
   # Сервис для PostgreSQL (клиника)
   clinic_service_db:
